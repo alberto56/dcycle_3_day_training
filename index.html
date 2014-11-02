@@ -33,10 +33,10 @@ layout: none
 </head>
 <body class="deck-container">
 
-{% for info in site.data.slides %}
+{% for slide in site.data.slides %}
   <section class="slide">
-    <h2>{{ info.title }}</h2>
-    {{ info.desc }}
+    <h2>{{ slide.title }}</h2>
+    {{ slide.desc | markdownify }}
   </section>
 {% endfor %}
 
