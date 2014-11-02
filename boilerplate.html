@@ -1,6 +1,3 @@
----
-layout: none
----
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,11 +5,11 @@ layout: none
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=1024, user-scalable=no">
 
-	<title>{{ site.title }}</title>
-
+	<title>Your deck.js Presentation</title>
+	
 	<!-- Required stylesheet -->
 	<link rel="stylesheet" href="core/deck.core.css">
-
+	
 	<!-- Extension CSS files go here. Remove or add as needed. -->
 	<link rel="stylesheet" href="extensions/goto/deck.goto.css">
 	<link rel="stylesheet" href="extensions/menu/deck.menu.css">
@@ -20,27 +17,34 @@ layout: none
 	<link rel="stylesheet" href="extensions/status/deck.status.css">
 	<link rel="stylesheet" href="extensions/hash/deck.hash.css">
 	<link rel="stylesheet" href="extensions/scale/deck.scale.css">
-	<link rel="stylesheet" href="my.css">
 
 	<!-- Style theme. More available in /themes/style/ or create your own. -->
 	<link rel="stylesheet" href="themes/style/web-2.0.css">
-
+	
 	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
 	<link rel="stylesheet" href="themes/transition/horizontal-slide.css">
-
+	
 	<!-- Required Modernizr file -->
 	<script src="modernizr.custom.js"></script>
 </head>
 <body class="deck-container">
 
-{% for info in site.data.slides %}
-  <section class="slide">
-    <h2>{{ info.title }}</h2>
-    {{ info.desc }}
-  </section>
-{% endfor %}
+<!-- Begin slides. Just make elements with a class of slide. -->
+
+<section class="slide">
+	<h1>Slide</h1>
+</section>
+
+<section class="slide">
+	<h1>Content</h1>
+</section>
+
+<section class="slide">
+	<h1>Here</h1>
+</section>
 
 <!-- End slides. -->
+
 
 <!-- Begin extension snippets. Add or remove as needed. -->
 
@@ -90,45 +94,3 @@ layout: none
 </script>
 </body>
 </html>
-
-<!-- Notes
-
-MAYBE
-
-Drupal BDD/TDD with qUnit
-testswarm
-quailjs
-
-
-***** Proposed training schedule *****
-
-
-
-Please let me know if you have any comments, questions or proposed changes,
-
-
-Start with the Tests
-Involve Stakeholders
-
-
-		•bdd/tdd
-		•drupal
-		•tools
-		•setup
-		•deploy/clone
-		•concepts
-		•git
-		•mock object
-		•ci/jenkins
-		•quality gates
-		•tips on usage
-		•d8
-		•peer review
-		•hook_req
-		•VGA adaptor
-		•rôles TESTANDREW + refactor
-		•get back to him
-		•next
-		•bdd/tdd
-
--->
