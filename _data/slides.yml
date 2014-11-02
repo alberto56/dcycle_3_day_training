@@ -1,6 +1,7 @@
 - title: YAHOO
   desc: >
-    does this work?
+    <p>does this work?<br/>
+    This is an open-source slideshow, you can <a href="https://github.com/alberto56/dcycle_3_day_training/edit/gh-pages/_data/slides.yml">fork or edit it on GitHub</a></p>.
 
 - title: YAHOO
   desc: >
