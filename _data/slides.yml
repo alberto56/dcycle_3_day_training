@@ -14,28 +14,407 @@
 # See http://alberto56.github.io/dcycle_3_day_training/
 #
 #############
-
-- title: YAHOO
+#
+- title: Intro
   desc: |
-    does this work2?
+    Who am I?
+
+     * Albert Albala (alberto56)
+     * Worked with STM, CGI, Koumbit, TP1
+     * Interests: Testing, Continuous integration, Deployment
 
     This is an open-source slideshow, you can [fork or edit it on GitHub](https://github.com/alberto56/dcycle_3_day_training/edit/gh-pages/_data/slides.yml)
 
 #############
 
-- title: YAHOO
+- title: Intro
   desc: |
-    does this work?
+    Who are you?
 
-    Here is a slideshow
-
-     * test
-     * this is a
-     * test2
+     * Introductions
+     * Your _top five_ desired takeaways?
 
 #############
 
-- title: YAHOO
-  desc: >
-    does this work?
+- title: Goal
+  desc: |
+    * Define best practices.
+    * Agree *as a team*
+    * Actionable items.
+    * Have a centralized issue-tracker for progress.
 
+#############
+
+- title: Approach
+  desc: |
+    * Gradual and incremental (like *Agile*).
+    * No perfect solution: continuous improvement.
+    * Human interactions more important than tools.
+    * Implement only what we agree upon
+    * Hands-on with a real website and a real Jenkins server
+    * *Don't subvert the process*
+
+#############
+
+- title: Quality is our ultimate goal
+  desc: |
+   * Four basic ingredients:
+    * Agile
+    * Deployment
+    * Continuous integration
+    * Tests
+
+#############
+
+- title: Proposed schedule
+  desc: |
+     * 50% discussion, 50% practice
+     * Day one: basics
+     * Day two: extending CI, using Git
+     * Day three: environments, devops...
+
+#############
+
+- title: Proposed schedule (day 1/3)
+  desc: |
+     * Our environments
+     * CI
+     * Deployment
+     * The test pyramid
+     * Four types of tests (hands-on)
+     * Legacy code
+
+#############
+
+- title: Proposed schedule (day 2/3)
+  desc: |
+     * Extending CI
+      * Metrics
+      * SASS
+     * How do we use git
+      * Discussion on branching
+     * (How) do we code review?
+
+#############
+
+- title: Proposed schedule (day 3/3)
+  desc: |
+     * Quality gates and environments
+     * Using DevOps
+     * Inviolability principle (don't subvert the process)
+
+#############
+
+- title: Prerequisites (before we start)
+  desc: |
+     * SSH key
+     * Internet connection
+     * Access to Jenkins (front-end)
+     * Access to Jenkins (terminal)
+     * Access to the Drupal 7 project git repo
+     * Access to the Drupal 8 project git repo
+     * Access to the Drupal 7 project issue queue
+     * Access to the Drupal 8 project issue queue
+     * Team's continuous improvement issue queue
+     * `drush version`: v. 6 for D7, v. 7 for D7/8
+
+#############
+
+- title: Suggestion on how to proceed
+  desc: |
+   * Hands-on
+   * Real live D7 and D8 sites
+   * Real features
+   * Real bugs
+   * Pair-programming
+
+#############
+
+- title: Our setep for the training
+  desc: |
+   * __It's not perfect, it's just for the demo!__
+   * Site deployment module
+   * Never clone databases
+   * 2 git branches: master (unstable) and prod (stable)
+   * Commits in small chunks, no branches
+   * Jenkins, dev and prod on the same machine
+   * __On day three we'll talk about tailoring this setup for this team__.
+
+#############
+
+- title: Initial deployment
+  desc: |
+   * [hands-on] clone D7 and D8 on your local environment
+   * new development environment with dummy data
+   * The database is not cloned
+   * inspecting the common dev environment
+   * inspecting the "prod" environment
+   * inspecting the CI jobs and what they do
+   * the CI wall display
+
+#############
+
+- title: Initial deployment step 1
+  desc: |
+    Clone the git repos (D7 and D8)
+
+#############
+
+- title: Initial deployment step 2
+  desc: |
+    Create your databases
+
+        echo 'create database d7demo'|mysql -uroot -proot
+        echo 'create database d8demo'|mysql -uroot -proot
+
+#############
+
+- title: Set up your D7 site
+  desc: |
+    Install Drupal & the site deployment module, and log in
+
+        drush si --db-url=mysql://root:root@localhost/d7demo -y
+        drush en demo_deploy -y
+        drush en demo_devel -y
+        drush generate-relatistic
+        drush uli
+
+#############
+
+- title: Set up your D8 site (1/3)
+  desc: |
+    Install Drupal & the site deployment module
+
+        drush si --db-url=mysql://root:root@localhost/d8demo -y
+        drush en demo_deploy -y
+        drush en demo_devel -y
+
+#############
+
+- title: Set up your D8 site (2/3)
+  desc: |
+    Set the configuration folder
+
+        echo "$config_directories['deploy'] = '../deploy';" >> sites/default/settings.php
+
+#############
+
+- title: Set up your D8 site (3/3)
+  desc: |
+    Set configuration, dummy content and log in
+
+        drush cim deploy -y
+        drush generate-users 10
+        drush generate-content 10
+        drush uli
+
+
+
+
+
+
+#  * How do we do an initial deployment (to dev, preprod, to a new developer's laptop)?
+#  * How do we do an incremental deployment? Is the process standardized?
+#  * How do we push to dev? How? Jenkins?
+#  * Do we use a preproduction environment? How do we push to it?
+#  * In which contexts is it OK to clone the database?
+#  * How do we peer review? How does it fit into our process?
+#  * Writing automated tests should come after we figured out all the rest, that's why we'll talk about on day 2.
+#  * Which metrics do we track over time? Do we define thresholds above/below which our build should fail? For example, how many minor styling errors (using the coder module) do we tolerate? 100? 100000? no limit? What is our objective for test coverage of custom code? No lower limit? 10%? 40%?
+#  * How do we use server config management and virtualization tools like Puppet, Ansible, Docker, Vagrant...
+#
+# How we deploy initially
+# *********************--
+#
+# I will present a fully-functional dummy site with a working production environment, and how we can use a one-step [site deployment module](http://dcycleproject.org/blog/44/what-site-deployment-module) [without cloning the database](http://dcycleproject.org/blog/48/do-not-clone-database), using instead [realistic rich dummy content](https://www.drupal.org/project/realistic_dummy_content) to have a working development copy.
+#
+# We will look at:
+#
+#  * the reasoning behind not cloning the database.
+#  * the concept of a "known-good starting point" introduced by Jez Humble
+#  * some edge cases which might cause problems if we do not clone the database, for example [taxonomy incremental ids in views code generated by features](http://dcycleproject.org/blog/50/do-not-use-incremental-ids-your-code).
+#
+# The following approach has worked for me on small to large projects: deploying new environments goes something like this:
+#
+#     drush site-install -y
+#     drush en mysite_deploy -y
+#
+# In development environments we can add some development tools as well as dummy content
+#
+#     drush en mysite_devel -y
+#     drush generate-realistic -y
+#
+# How we deploy incrementally
+# *********************------
+#
+# We should strive for an approach where deploying incrementally between any two versions of a code, on any environment, should be done in a standardized manner. This is key to having deployments done by a ci server, and for staff to get an up-to-date version of the site on their laptop in minutes. I have used some version of the following script on several projects without any glitch:
+#
+#   drush vset maintenance_mode 1
+#     git pull origin master # or whatever branch we want, prod for production for example.
+#     drush rr # rebuild the registry
+#     drush updb -y # run update hooks
+#     drush fra # revert all features
+#     drush cc all
+#     drush cron
+#   drush vset maintenance_mode 0
+#
+# What does our CI server do?
+# *********************------
+#
+# Now that we are limiting our use of unversioned database cloning, and we a reliable reproducible initial and incremental deployment technique, we can set up our CI server to deploy for us. We can even [continuously deploy](http://dcycleproject.org/blog/46/continuous-deployment-drupal-style) to preproduction (or even to production if we are brazen enough) if we so choose.
+#
+# Tracking metrics and thresholds
+# ****************************---
+#
+# Our CI server can do anything we can do on the command line, not just deploy. We will set up the following:
+#
+#  * Run our first test (we will use a unit test, database test or request-response test).
+#  * Run code quality metrics, track it and set thresholds
+#  * Save artifacts for future use
+#
+# Branches and code review: how we do it
+# *********************----
+#
+# On the projects I've set up in the past:
+#
+#  * any team member could push to master.
+#  * jenkins then sets the code to red (if tests fail) or green
+#  * if tests pass for a commit, it is automatically moved to a prod branch and the common dev environment is updated.
+#  * the incremental deployment script is launched by a human being on the production server at the end of every sprint demo.
+#
+# This has the advantage of being simple, but the drawback of not imposing code review. We need to figure out some techniques and tools to impose code review if we so desire. Phabricator, Gerrit, Branches can be discussed.
+#
+# Legacy sites: what they are and how to deal with them
+# *************************************************----
+#
+# We can define together what is a legacy site. According to Michael Feathers in the book "Working Effectively with Legacy Code", legacy code is code which is not tested.
+#
+# I would suggest the following definitions, to be discussed:
+#
+#  * a legacy project is a project which is not under active continuous integration.
+#  * a project which has zero tests is a legacy project.
+#  * a project with more than zero tests is not a legacy project.
+#  * any line of code which not covered by tests is a legacy line of code.
+#  * test coverage for a project is a measure of its quality. (what percentage of lines of code are covered by tests).
+#
+# Furthermore, anything which is not *deployable* is not really code at all but data. For example, any nodes, taxonomy terms, views which depend on taxonomy term ids (or other incremental ids)...
+#
+# Let's imagine a Drupal project which has no tests and is not covered by an active CI job. How do we deal with this? I would suggest an iterative approach:
+#
+#  * For every bug report or feature request, make sure new code is tested, deployable, and checked by a CI job.
+#  * Everything outside of our new modern code should be considered either data (if it's in the database or otherwise unversioned -- the files directory, etc.), or legacy code (if it's in git, but somehow untestable, either because there are no tests for it, or it contains incremental IDs...)
+#
+# In my mind the barrier to entry to transform a legacy project to a modern project is very low: simple write one test and put the entire project under a ci job. At first our project will have very low test coverage, a high percentage of data vs code. Our goal should be to increase the *quality* of this project over time, not in one fell swoop.
+#
+# Part 2: tests
+# *******------
+#
+# ### The test pyramid
+#
+# Mike Cohn has proposed the concept of a [test pyramid](http://martinfowler.com/bliki/TestPyramid.html). In my experience is it crucial to follow this principle: unit tests first, then database tests, then rich gui tests.
+#
+# ### Unit tests: cheapest
+#
+# We will introduce Simpletest and PHPUnit for unit tests.
+#
+# ### Database tests: relatively cheap (if done right)
+#
+# Database tests ignore the current database, and run a new deployment of the site to test it, this is why in my experience it is important to have a one-step deployment process without cloning the database. We'll give one example and introduce ways to make the tests faster (slow tests are irritating)..
+#
+# ### Mocking: how and why?
+#
+# We'll introduce how to deal with third-party systems by abstracting the interface between our site and the third-party service using mocking. We'll also look at some of the advanced mocking capabilities in PHPUnit, which ships with D8.
+#
+# ### Rich UI and browser-specific tests: expensive
+#
+# We'll look at running tests on different browsers using Selenium, and we'll look at how a headless webkit-based browser (PhantomJS) can help test rich dynamic UI.
+#
+# ### Behat: why/how to use?
+#
+# Finally we'll look at what Behat is, what it's designed for, and in which contexts we will want to use it.
+#
+# Part 3: Metrics
+# **************-
+#
+# Jenkins can track different metrics, set thresholds, and create nice graphs. We can track things like:
+#
+#  * Code quality (pdepend, coder...)
+#  * Test coverage.
+#  * Css quality
+#  * a11y (accessibility) tests
+#  * whatever else you can do in the command line...
+#
+# Resources
+# *******--
+#
+#  * [The Dcycle blog and manifesto](http://dcycleproject.org)
+#  * Book "Continuous delivery" by Jez Humble
+#  * Book "Working Effectively with Legacy Code" by Michael Feathers
+#
+#                                            - [ ] behat: as any test, HUMANS should run tests, CI should. Make CI
+#                                                 server run behat test on a known good starting point
+#                                           - [ ] ci setup on a new server
+#                                           - [ ] git repos see them d7, d8
+#
+#                                           - [ ] code review
+#                                           - [ ] security review
+#                                           - [ ] naming our environments (dev, preprod, stage...)
+#                                           - [ ] branches
+#                                           - [ ] sass
+#                                           - [ ] what do we mean by tested? deployable?
+#                                           - [ ] vagrant box
+#                                           - [ ] are we deploying issues or a branch? cf. XP
+#                                           - [ ] swimlanes
+#                                           - [ ] don't subvert the process
+#                                           - [ ] reproduce prod bugs, don't solve them
+#                                           - [ ] integration hell
+#                                           - [ ] roles (specific people don't see certain things)
+#                                           - [ ] changing the prefix
+#                                           - [ ] the _development_ module
+#                                           - [ ] testing ie, service + selenium
+#                                           - [ ] work of art
+#                                           - [ ] you should have Git access now (yay)
+#
+#                                                 djac [3:37 PM]
+#                                                 and the new 2 repos are setup. please try to clone them and make
+#                                                 sure you can push to master. i'm not sure you can do a forced
+#                                                 push, so please try that if you think it might be needed for the
+#                                                 training sessions
+#
+#                                                 djac [3:37 PM]3:37
+#                                                 ```git clone
+#                                                 git-lf-infra@git.linuxfoundation.org:webdevel/drupal/ci-demo-drupa
+#                                                 l-7
+#                                                 git clone
+#                                                 git-lf-infra@git.linuxfoundation.org:webdevel/drupal/ci-demo-drupa
+#                                                 l-8
+#                                           - [ ] theming directly from test results screenshots
+#                                           - [ ] the importantce of DEFINING terms, content, config, deploying, legacy software, etc.
+#                                           - [ ] TDD in action
+#                                           - [ ] you can't write automated tests for a en environment, you can
+#                                                 write it for code ===== what's code? what's configuration?
+#                                           - [ ] patches
+#                                           - [ ] enabling disabling modules
+#                                           - [ ] nothing special about production
+#                                           - [ ] we're developing software or configuring it?
+#                                           - [ ] the patches directory
+#                                           - [ ] taxonomy id in view
+#                                           - [ ] never config anything on prod
+#                                           - [ ] do drush si very often
+#                                           - [ ] if it's painful (drush si), do it more often, several times a day!
+#
+# modes
+# sad path
+#https://ohthehugemanatee.org/blog/2014/11/03/drupalgeddon-means-we-cant-trust-humans-with-updates/
+
+#https://github.com/alberto56/vagrant-jenkins
+#http://104.236.44.134:8080
+#admin
+#Q7991e
+#integration with irc (extensions)
+#lf-generatl
+#prerequisites
+#realistic data: whale and skycraper
+#crap from word
+
+hands on: add a module, change a
