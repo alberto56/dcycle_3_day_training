@@ -34,7 +34,7 @@ layout: none
 <body class="deck-container">
 
 {% for slide in site.data.slides %}
-  <section class="slide">
+  <section class="slide {{ slide.id }}" id="{{ slide.id }}">
     <h2>{{ slide.title }}</h2>
     {{ slide.desc | markdownify }}
   </section>
