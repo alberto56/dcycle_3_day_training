@@ -200,7 +200,7 @@
 - id: deploy
   title: Initial deployment
   desc: |
-   * [hands-on] clone D7 and D8 on your local environment
+   * [hands-on] clone D7 and D8 on your local environment (instructions coming up)
    * new development environment with dummy data
    * The database is not cloned
    * inspecting the common dev environment
