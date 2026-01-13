@@ -2,8 +2,8 @@ backend:
   name: github
   repo: alberto56/dcycle_3_day_training
   branch: gh-pages
-  base_url: https://suresh-issue-82.dcycleproject.org
-  auth_endpoint: /auth/github/repo/694f513b18f56cc3582664df
+  base_url: https://app.staticauth.com
+  auth_endpoint: /auth/github/repo/696663b78a3239f2047175c8
 media_folder: static/uploads
 public_folder: /uploads
 collections:
